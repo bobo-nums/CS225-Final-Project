@@ -2,6 +2,8 @@
 #include <vector>
 #include "readFromFile.hpp"
 
+using namespace std;
+
 int main(int argc, const char * argv[]) {
 	std::cout << "Filename: " << argv[1] << std::endl;
 	
