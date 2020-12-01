@@ -90,6 +90,7 @@ public:
     //Graph(bool weighted, int numVertices, unsigned long seed);
 
     void fillGraph(vector<string>, string);
+    void DFS(string);
 
     /**
      * Gets all adjacent vertices to the parameter vertex.

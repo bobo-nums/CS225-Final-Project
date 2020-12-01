@@ -1,4 +1,7 @@
 #include "graph.h"
+#include <stack>
+
+using namespace std;
 
 const Vertex Graph::InvalidVertex = "_CS225INVALIDVERTEX";
 const int Graph::InvalidWeight = INT_MIN;
@@ -85,7 +88,29 @@ void Graph::fillGraph(vector<string> edges, string egoNode){
     }
 }
 
+void Graph::DFS(string start_vertex){
+    set<string> visited; 
+    
+    stack<string> stk;
+    stk.push(start_vertex);
+    string curr_vertex;
 
+    while(!stk.empty()){
+        curr_vertex = stk.top();
+        stk.pop();
+
+        if(visited.find(curr_vertex) == visited.end()){
+            cout << curr_vertex << endl;
+            visited.insert(curr_vertex);
+        }
+
+        for(string neighbor : getAdjacent(curr_vertex)){
+            if(visited.find(neighbor) == visited.end()){
+                stk.push(neighbor);
+            }
+        }
+    }
+}
 
 //////////////////////////////////////////////////////////
 

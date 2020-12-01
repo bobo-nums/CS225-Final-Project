@@ -34,6 +34,8 @@ int main(int argc, const char* argv[]){
 
 	Graph G(false, true);
 	G.fillGraph(out, egoNode);
-	G.print();
+
+	G.DFS(egoNode);
+	//G.print();
 	
 }
