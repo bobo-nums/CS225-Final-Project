@@ -1,4 +1,6 @@
 EXENAME = finalproj
+
+EXE_OBJS = main.o
 OBJS = readFromFile.o main.o
 
 CXX = clang++
@@ -21,7 +23,7 @@ else
 CLANG_VERSION_MSG = $(warning $(ccyellow) Looks like you are not on EWS. Be sure to test on EWS before the deadline. $(ccend))
 endif
 
-.PHONY: all test clean output_msg
+.PHONY: all clean output_msg #test
 
 all : $(EXENAME)
 
@@ -33,8 +35,8 @@ $(EXENAME): output_msg $(OBJS)
 readFromFile.o: main.cpp readFromFile.cpp graph.cpp dijkstra.cpp
 	$(CXX) $(CXXFLAGS) main.cpp readFromFile.cpp graph.cpp dijkstra.cpp
 
-test: output_msg catch/catchmain.cpp tests/tests.cpp readFromFile.cpp
-	$(LD) catch/catchmain.cpp tests/tests.cpp readFromFile.cpp $(LDFLAGS) -o test
+# test: output_msg catch/catchmain.cpp tests/tests.cpp readFromFile.cpp
+# 	$(LD) catch/catchmain.cpp tests/tests.cpp readFromFile.cpp $(LDFLAGS) -o test
 
 clean:
 	-rm -f *.o $(EXENAME) test
