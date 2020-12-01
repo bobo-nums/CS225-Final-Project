@@ -74,14 +74,18 @@ Graph::Graph(bool weighted, bool directed) : weighted(weighted),directed(directe
 // }
 //////////////////////////////////////////////////////////
 
-void Graph::fillGraph(vector<string> edges){
+void Graph::fillGraph(vector<string> edges, string egoNode){
+    this->insertVertex(egoNode);
     for(unsigned i = 0; i < edges.size(); i++){
         this->insertVertex(edges[i]);
+        this->insertEdge(egoNode, edges[i]);
     }
     for(unsigned i = 0; i < edges.size()/2; i++){
         this->insertEdge(edges[i], edges[i+1]);
     }
 }
+
+
 
 //////////////////////////////////////////////////////////
 
