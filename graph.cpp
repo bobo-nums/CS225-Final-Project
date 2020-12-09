@@ -1,6 +1,6 @@
 #include "graph.h"
 #include <stack>
-
+#include <queue>
 using namespace std;
 
 const Vertex Graph::InvalidVertex = "_CS225INVALIDVERTEX";
@@ -88,6 +88,10 @@ void Graph::fillGraph(vector<string> edges, string egoNode){
     }
 }
 
+// void Graph::fillWeights(int featureIndex){
+
+// }
+
 void Graph::DFS(string start_vertex){
     set<string> visited; 
     
@@ -112,6 +116,63 @@ void Graph::DFS(string start_vertex){
     }
 }
 
+
+vector<string> Graph::Dijkstra(string source, string destination){
+
+    //struct for comparison function of priority queue
+    struct CompareWeight { 
+        bool operator()(std::pair<string, int> const& a, std::pair<string, int> const& b) 
+        { 
+            //return true if vertex a's value > vertex b's value
+            return a.second > b.second; 
+        } 
+    };
+
+    vector<Vertex> vertices = this->getVertices();
+    std::unordered_map<string, int> distances;  // initialize tentative distance values for each vertex
+    std::unordered_map<string, string> prev_map;   // initialize a map that maps current vertex -> its previous vertex
+    typedef std::priority_queue<std::pair<string, int>, vector<std::pair<string, int>>, CompareWeight> myqueue;
+    myqueue q;   // initialize the priority queue of vertex distance pairs
+    std::set<string> visited;   //initialize visited set to check which vertices have been visited
+
+
+    for(Vertex v : vertices){
+        distances[v] = INT_MAX;
+    }
+    distances[source] = 0;
+    q.push(std::pair<string, int>(source, 0));
+
+    while(q.top().first != destination){
+        //get the pair from priority_queue
+        std::pair<string, int> curr_node = q.top();
+        string curr_vertex = curr_node.first;
+        q.pop();
+        
+        //mark current node as visited
+        visited.insert(curr_node.first);
+        
+        vector<string> neighbors = this->getAdjacent(curr_vertex);
+        for(string neighbor : neighbors){
+            if(visited.find(neighbor) == visited.end()){
+                int dist = distances[curr_vertex] + this->getEdgeWeight(curr_vertex, neighbor);
+                if(dist <= distances[neighbor]){
+                    distances[neighbor] = dist;
+                    prev_map[neighbor] = curr_vertex;
+                    q.push(std::pair<string, int>(neighbor, dist));
+                }
+            }
+        }
+    }
+    //extract path from previous
+    vector<string> path;
+    string curr = destination;
+    while(curr != source){
+        path.push_back(curr);
+        curr = prev_map[curr];
+    }
+    std::reverse(path.begin(), path.end());
+    return path;
+}
 //////////////////////////////////////////////////////////
 
 

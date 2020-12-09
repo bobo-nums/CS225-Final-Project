@@ -21,19 +21,23 @@ using namespace std;
 // }
 #include "graph.h"
 
+
+//Usage: ./finalproj [edges file-path] [egofeatures file-path] [features file-path]
+
 int main(int argc, const char* argv[]){
-	vector<string> out;
+	vector<string> edges;
 	string egoNode = argv[1];
 	if(argc >= 1){
-		out = file_to_vector(argv[1]);
+		edges = file_to_vector(argv[1]);
 		egoNode = egoNode.substr(egoNode.find("/") + 1, egoNode.size() - egoNode.find(".") - 1);
+
 
 		// for(unsigned i = 0; i < out.size(); i++)
 		// 	cout << out[i] << " ";
 	}
 
 	Graph G(false, true);
-	G.fillGraph(out, egoNode);
+	G.fillGraph(edges, egoNode);
 
 	G.DFS(egoNode);
 	//G.print();

@@ -89,9 +89,13 @@ public:
      */
     //Graph(bool weighted, int numVertices, unsigned long seed);
 
+
+    //////////////////////////////////////////////////////////////////////////
     void fillGraph(vector<string>, string);
     void DFS(string);
+    vector<string> Dijkstra(string, string);
 
+    //////////////////////////////////////////////////////////////////////////
     /**
      * Gets all adjacent vertices to the parameter vertex.
      * @param source - vertex to get neighbors from
