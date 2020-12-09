@@ -29,11 +29,25 @@ void Graph::fillGraph(vector<string> edges, string egoNode){
     for(unsigned i = 0; i < edges.size()/2; i++){
         this->insertEdge(edges[i], edges[i+1]);
     }
+    fillWeights();
 }
 
-// void Graph::fillWeights(int featureIndex){
-
-// }
+void Graph::fillWeights(){
+    vector<Vertex> first, second, intersection;
+	Vertex source_, dest_;
+	for(Edge e : G.getEdges()){
+		source_ = e.source;
+		dest_ = e.dest;
+		first = getAdjacent(e.source);
+		second = getAdjacent(e.dest);
+		
+		set_intersection(first[1], first.back, second[1], second.back, back_inserter(intersection));
+		//assume this function above assigns the intersection of pairs of vertices to the intersection vector
+        //size corresponds to how many are in common within the two vertices
+		G.setEdgeWeight(source_, dest_, intersection.size());
+		
+	}
+}
 
 void Graph::DFS(string start_vertex){
     set<string> visited; 
