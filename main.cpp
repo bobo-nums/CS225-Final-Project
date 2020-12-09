@@ -17,9 +17,8 @@ int main(int argc, const char* argv[]){
 	Graph G(false, true);
 	G.fillGraph(edges, egoNode);
 	//vector of vertices
-	G.fillWeights();
+	//G.fillWeights();
 
-	1364
 	G.DFS(egoNode);
 	//G.print();
 

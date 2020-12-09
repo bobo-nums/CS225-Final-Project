@@ -66,7 +66,7 @@ public:
     void fillGraph(vector<string>, string);
     void DFS(string);
     vector<string> Dijkstra(string, string);
-    void fillWeights(vector<Vertex> nodes);
+    void fillWeights();
 
     //////////////////////////////////////////////////////////////////////////
     /**

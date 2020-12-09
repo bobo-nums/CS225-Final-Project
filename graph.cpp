@@ -29,24 +29,50 @@ void Graph::fillGraph(vector<string> edges, string egoNode){
     for(unsigned i = 0; i < edges.size()/2; i++){
         this->insertEdge(edges[i], edges[i+1]);
     }
-    fillWeights();
-}
-
-void Graph::fillWeights(){
-    vector<Vertex> first, second, intersection;
-	Vertex source_, dest_;
-	for(Edge e : G.getEdges()){
-		source_ = e.source;
+    //vertex and string are interchangeable
+    vector<string> first, second, intersection;
+	string source_, dest_, first1, last1, first2, last2;
+    size_t i, j, limit, smaller;
+    int numCommon = 0;
+    //1365
+	for(Edge e : this->getEdges()){
+		source_ = e.source;  
 		dest_ = e.dest;
 		first = getAdjacent(e.source);
 		second = getAdjacent(e.dest);
+        if(first.size() < second.size()){
+            limit = second.size();
+            smaller = first.size();
+        } else{
+            limit = first.size();
+            smaller = second.size();
+        }
+        for(i = 0; i < limit; i++){
+            for(j = 0; j < smaller; j++){
+                if(first[i] == first[j]){
+                    numCommon++;
+                }
+            }
+        }
+
+        // first1 = first[i];
+        // last1 = first.back();
+        // first2 = second[i];
+        // last2 = second.back();
 		
-		set_intersection(first[1], first.back, second[1], second.back, back_inserter(intersection));
+		// while(first1 != last1 && first2 != last2){
+            
+        // }
+        // set_intersection(first[1], first.back, second[1], second.back, back_inserter(intersection));
 		//assume this function above assigns the intersection of pairs of vertices to the intersection vector
         //size corresponds to how many are in common within the two vertices
-		G.setEdgeWeight(source_, dest_, intersection.size());
+		this->setEdgeWeight(source_, dest_, numCommon);
 		
 	}
+}
+
+void Graph::fillWeights(){
+    
 }
 
 void Graph::DFS(string start_vertex){
