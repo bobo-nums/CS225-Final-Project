@@ -14,13 +14,13 @@ int main(int argc, const char* argv[]){
 		edges = file_to_vector(argv[1]);
 		egoNode = egoNode.substr(egoNode.find("/") + 1, egoNode.size() - egoNode.find(".") - 1);
 	}
-	Graph G(false, true);
+	Graph G(true, true);
 	G.fillGraph(edges, egoNode);
-	//vector of vertices
-	//G.fillWeights();
+	
+	//  ./finalproj sample_dataset/12831.edges 
 
-	G.DFS(egoNode);
-	//G.print();
+	// G.DFS(egoNode);
+	G.print();
 
 
 }

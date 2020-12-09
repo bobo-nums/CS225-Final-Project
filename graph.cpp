@@ -67,6 +67,7 @@ void Graph::fillGraph(vector<string> edges, string egoNode){
 		//assume this function above assigns the intersection of pairs of vertices to the intersection vector
         //size corresponds to how many are in common within the two vertices
 		this->setEdgeWeight(source_, dest_, numCommon);
+        numCommon = 0;
 		
 	}
 }
