@@ -63,7 +63,7 @@ public:
 
 
     //////////////////////////////////////////////////////////////////////////
-    void fillGraph(vector<string>, string);
+    void fillGraph(vector<Vertex>, vector<string>, string);
     void DFS(string);
     vector<string> Dijkstra(string, string);
 
@@ -229,6 +229,12 @@ private:
     //Random random;
     int picNum;
     string picName;
+
+    /////////////////////////////////////////////////
+    //A map of all vertices and their corresponding features
+    // ie  12831 [0,0,0,1,1,0,1,0,0,0,0]
+    unordered_map<Vertex, vector<string>> feature_map;
+    /////////////////////////////////////////////////
 
 
     /**
