@@ -59,6 +59,7 @@ int main(int argc, const char* argv[]){
 		}
 		cout << endl;
 	}
+
 	// Run Dijkstra's algorithm
 	if(dijkstra){
 		vector<string> dijkstra_result = G.Dijkstra(source, destination);
@@ -68,22 +69,12 @@ int main(int argc, const char* argv[]){
 		}
 		cout << endl;
 	}
+	
 	// Run Betweenness Centrality algorithm
-	// if(centrality){
-	// 	vector<string> centrality_result = G.Centrality(source);
-	// 	cout << "Betweenness Centrality Output" << endl;
-	// 	for(unsigned i = 0; i < centrality_result.size(); i++){
-	// 		cout << centrality_result[i] << " ";
-	// 	}
-	// 	cout << endl;
-	// }
-
+	if(centrality){
+		int centrality_result = G.centrality(source);
+		cout << "Betweenness Centrality Output" << endl;
+		cout << centrality_result;
+		cout << endl;
+	}
 }
-
-	// string test1 = "663463";
-	// string test2 = "9616792";
-	// cout << "Test Dijkstra: " << test1 << ", " << test2 << endl;
-	// vector<Vertex> path = G.Dijkstra(test1, test2);
-	// for(unsigned i = 0; i < path.size(); i++){
-	// 	cout << path[i] << endl;
-	// }

@@ -8,7 +8,6 @@
 */
 
 TEST_CASE("DFS Test - No outgoing paths", "[weight=1]"){
-    // https://i.gyazo.com/7cd42322c2cfd471c7841229f5e9566d.png
     Graph g(true, true);
     g.insertVertex("0");
     g.insertVertex("1");
@@ -26,7 +25,6 @@ TEST_CASE("DFS Test - No outgoing paths", "[weight=1]"){
 }
 
 TEST_CASE("DFS Test - Connected graph", "[weight=1]"){
-    // https://i.gyazo.com/5774678812e25f4cba1ca83f70915514.png
     Graph g(true, true);
     g.insertVertex("0");
     g.insertVertex("1");
@@ -50,7 +48,6 @@ TEST_CASE("DFS Test - Connected graph", "[weight=1]"){
 }
 
 TEST_CASE("DFS Test - Disconnected graph", "[weight=1]"){
-    // https://i.gyazo.com/988a156201881b465b97f8264fe2260a.png
     Graph g(true, true);
     for(int i = 0; i < 8; i++){
         g.insertVertex(to_string(i));
@@ -79,7 +76,6 @@ TEST_CASE("DFS Test - Disconnected graph", "[weight=1]"){
 }
 
 TEST_CASE("DFS Test - Cycle", "[weight=1]"){
-    // https://i.gyazo.com/1a399064a5eb5d7c1f703da15bc30f35.png
     Graph g(true, true);
     for(int i = 0; i < 8; i++){
         g.insertVertex(to_string(i));
@@ -109,7 +105,6 @@ TEST_CASE("DFS Test - Cycle", "[weight=1]"){
 */
 
 TEST_CASE("Dijkstra - Basic test", "[weight=1]"){
-    // https://i.gyazo.com/4d0628465e0c5cf2840c764809cefc0c.png
     Graph g(true, true);
 
     for(int i = 0; i < 6; i++){
@@ -140,12 +135,11 @@ TEST_CASE("Dijkstra - Basic test", "[weight=1]"){
     vector<string> expected = {"0", "2", "4", "3", "5"};
     vector<string> result = g.Dijkstra("0", "5");
     for(unsigned i = 0; i < expected.size(); i++){
-		  REQUIRE(expected[i] == result[i]);
+		REQUIRE(expected[i] == result[i]);
 	}
 }
 
 TEST_CASE("Dijkstra Test - Advanced test", "[weight=1]"){
-    // https://i.gyazo.com/1b54614f2e26ba882b6ac75e156c0758.png
     Graph g(true, true);
     for(int i = 0; i < 8; i++){
         g.insertVertex(to_string(i));
@@ -216,7 +210,6 @@ TEST_CASE("Dijkstra Test - Advanced test", "[weight=1]"){
 }
 
 TEST_CASE("Dijkstra Test - Path doesn't exist", "[weight=1]"){
-    // https://i.gyazo.com/8642a1dfebb404b8bdcaba153d123819.png
     Graph g(true, true);
     g.insertVertex("0");
     g.insertVertex("1");
@@ -243,7 +236,6 @@ TEST_CASE("Dijkstra Test - Path doesn't exist", "[weight=1]"){
 }
 
 TEST_CASE("Dijkstra Test - Connected graph", "[weight=1]"){
-    // https://i.gyazo.com/1ceb26b442364c8fa052f676c5c14ce4.png
     Graph g(true, true);
     g.insertVertex("0");
     g.insertVertex("1");
@@ -277,7 +269,6 @@ TEST_CASE("Dijkstra Test - Connected graph", "[weight=1]"){
 }
 
 TEST_CASE("Dijkstra Test - Disconnected graph", "[weight=1]"){
-    // https://i.gyazo.com/a71f8359d9cfd74ac01e002872850122.png
     Graph g(true, true);
 	for(int i = 0; i < 8; i++){
         g.insertVertex(to_string(i));
@@ -315,7 +306,6 @@ TEST_CASE("Dijkstra Test - Disconnected graph", "[weight=1]"){
 }
 
 TEST_CASE("Dijkstra Test - Cycle", "[weight=1]"){
-    // https://i.gyazo.com/2366899155803252516eded8fb0440ca.png
     Graph g(true, true);
     for(int i = 0; i < 8; i++){
         g.insertVertex(to_string(i));
@@ -361,25 +351,63 @@ TEST_CASE("Dijkstra Test - Cycle", "[weight=1]"){
 * ===================================================================================
 */
 
-TEST_CASE("Simple Centrality", "[weight=1"){
-  Graph g(true, true);
-	g.insertVertex("one");
-	g.insertVertex("two");
-	g.insertVertex("three");
-	g.insertVertex("four");
+TEST_CASE("Betweenness Centrality Test - Basic test", "[weight=1"){
+    Graph g(true, true);
+	g.insertVertex("0");
+	g.insertVertex("1");
+	g.insertVertex("2");
+	g.insertVertex("3");
 
-	g.insertEdge("one", "three");
-	g.setEdgeWeight("one", "three", 1);
+	g.insertEdge("0", "2");
+	g.setEdgeWeight("0", "2", 1);
 
-	g.insertEdge("two", "three");
-	g.setEdgeWeight("two", "three", 1);
+	g.insertEdge("1", "2");
+	g.setEdgeWeight("1", "2", 1);
 
-	g.insertEdge("three", "four");
-	g.setEdgeWeight("three", "four", 1);
+	g.insertEdge("2", "3");
+	g.setEdgeWeight("2", "3", 1);
 
-  int result = g.centrality("three");
-  int expected = 2;
-  REQUIRE(expected == result);
+    int result = g.centrality("2");
+    int expected = 2;
+    REQUIRE(expected == result);
+}
+
+TEST_CASE("Betweenness Centrality Test - Cycle", "[weight=1]"){
+    Graph g(true, true);
+    for(int i = 0; i < 8; i++){
+        g.insertVertex(to_string(i));
+    }
+
+    g.insertEdge("0", "1");
+    g.setEdgeWeight("0", "1", 2);
+
+    g.insertEdge("1", "3");
+    g.setEdgeWeight("1", "3", 3);
+
+    g.insertEdge("2", "1");
+    g.setEdgeWeight("2", "1", 1);
+
+    g.insertEdge("3", "2");
+    g.setEdgeWeight("3", "2", 1);
+
+    g.insertEdge("3", "4");
+    g.setEdgeWeight("3", "4", 5);
+
+    g.insertEdge("4", "5");
+    g.setEdgeWeight("4", "5", 2);
+
+    g.insertEdge("5", "7");
+    g.setEdgeWeight("5", "7", 4);
+
+    g.insertEdge("6", "4");
+    g.setEdgeWeight("6", "4", 1);
+
+    g.insertEdge("7", "6");
+    g.setEdgeWeight("7", "6", 1);
+
+    int expected = 15;
+    int result = g.centrality("4");
+    REQUIRE(expected == result);
 }
 
 /** 
@@ -389,19 +417,19 @@ TEST_CASE("Simple Centrality", "[weight=1"){
 */
 
 TEST_CASE("getAdjacent returns outgoing edges", "[weight=1]"){
-  Graph g(true, true);
-	g.insertVertex("one");
-	g.insertVertex("two");
-  g.insertVertex("three");
+    Graph g(true, true);
+    g.insertVertex("0");
+    g.insertVertex("1");
+    g.insertVertex("2");
 
-	g.insertEdge("one", "two");
-	g.setEdgeWeight("one", "two", 1);
+    g.insertEdge("0", "1");
+    g.setEdgeWeight("0", "1", 1);
 
-  g.insertEdge("two", "three");
-	g.setEdgeWeight("two", "three", 1);
+    g.insertEdge("1", "2");
+    g.setEdgeWeight("1", "2", 1);
 
-  vector<Vertex> adj = g.getAdjacent("two");
-  Vertex expected = "three";
-  REQUIRE(adj.size() == 1);
-  REQUIRE(adj[0] == expected);
+    vector<Vertex> adj = g.getAdjacent("1");
+    Vertex expected = "2";
+    REQUIRE(adj.size() == 1);
+    REQUIRE(adj[0] == expected);
 }

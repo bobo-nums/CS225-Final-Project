@@ -99,7 +99,12 @@ public:
      */
     vector<string> Dijkstra(string source, string destination);
  
-    int centrality(Vertex);
+    /**
+     * Uses the Betweenness centrality algorithm to compute centrality of a given node
+     * @param vertex - node we want to find the centrality of
+     * @return the centrality of the node
+     */
+    int centrality(Vertex vertex);
     //////////////////////////////////////////////////////////////////////////
 
     /**
