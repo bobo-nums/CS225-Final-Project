@@ -7,6 +7,7 @@
 using namespace std;
 
 //usage ./finalproj [edges filepath] [ego features filepath] [features filepath]
+
 int main(int argc, const char* argv[]){
 	vector<Vertex> edges;
 	vector<Vertex> egoFeatures;
@@ -37,9 +38,14 @@ int main(int argc, const char* argv[]){
 	// 	cout << features[i] << " ";
 	// }
 
-	Graph G(false, true);
+	Graph G(true, true);
 	G.fillGraph(edges, features, egoNode);
-
 	//G.DFS(egoNode);
-	//G.print();
+	G.print();
+
+	vector<Vertex> path = G.Dijkstra("668423", "14471007");
+	for(unsigned i = 0; i < path.size(); i++){
+		cout << path[i] << " ";
+	}
+	cout << endl;
 }

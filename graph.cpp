@@ -38,6 +38,12 @@ void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoN
         }
     }
 
+    fillWeights();
+    // vector<Vertex> adjvect = this->getAdjacent(egoNode);
+	// for(unsigned i = 0; i<adjvect.size(); i++){
+	// 	cout << adjvect[i] << " ";
+	// }
+
     //test if feature_map stores ego nodes features
     // cout << egoNode << " ";
     // vector<string> egoFeatures = feature_map[egoNode];
@@ -47,9 +53,28 @@ void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoN
 
 }
 
-// void Graph::fillWeights(int featureIndex){
+void Graph::fillWeights(){
 
-// }
+    vector<Edge> edges = this->getEdges();
+    for(Edge e : edges){
+        Vertex source = e.source;
+        Vertex dest = e.dest;
+        unsigned num_common = intersection(feature_map[source], feature_map[dest]);
+
+        this->setEdgeWeight(source, dest, num_common);
+    }
+}
+
+unsigned Graph::intersection(vector<string> &v1, vector<string> &v2){
+    
+    unsigned sum = 0;
+    for(unsigned i = 0; i < v1.size(); i++){
+        if(v1[i] == v2[i] && v1[i] == "1" && v2[i] == "1"){
+            sum++;
+        }
+    }
+    return sum;
+}
 
 void Graph::DFS(string start_vertex){
     set<string> visited; 
@@ -83,7 +108,7 @@ vector<string> Graph::Dijkstra(string source, string destination){
         bool operator()(std::pair<string, int> const& a, std::pair<string, int> const& b) 
         { 
             //return true if vertex a's value > vertex b's value
-            return a.second > b.second; 
+            return a.second < b.second; 
         } 
     };
 

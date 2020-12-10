@@ -64,6 +64,8 @@ public:
 
     //////////////////////////////////////////////////////////////////////////
     void fillGraph(vector<Vertex>, vector<string>, string);
+    void fillWeights();
+    unsigned intersection(vector<string>&, vector<string>&);
     void DFS(string);
     vector<string> Dijkstra(string, string);
     string helper(vector<pair<string, string>>, string, string, string);
