@@ -38,6 +38,7 @@ TEST_CASE("Dijkstra1 test", "[weight=1]"){
 		REQUIRE(expected[i] == result[i]);
 	}
 }
+
 TEST_CASE("Dijkstra2 test", "[weight=1]"){
 
   Graph G(true, true);
@@ -96,7 +97,9 @@ TEST_CASE("Dijkstra2 test", "[weight=1]"){
    REQUIRE(test[i] == sol_path[i]);
 }
 }
+
 TEST_CASE("Dijkstra3 test", "[weight=1]"){
+
   Graph G(true, true);
 
   G.insertVertex("one");
