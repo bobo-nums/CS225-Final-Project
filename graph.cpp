@@ -22,10 +22,14 @@ Graph::Graph(bool weighted, bool directed) : weighted(weighted),directed(directe
 
 void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoNode){
     this->insertVertex(egoNode);
+    //iterate through vector of edges and add all vertices
+    //do not worry about duplicates
     for(unsigned i = 0; i < edges.size(); i++){
         this->insertVertex(edges[i]);
         this->insertEdge(egoNode, edges[i]);
     }
+  
+    //iterate through sets of vertices to insert edges
     for(unsigned i = 0; i < edges.size(); i+=2){
         this->insertEdge(edges[i], edges[i+1]);
     }
@@ -52,6 +56,7 @@ void Graph::fillWeights(){
 }
 
 int Graph::intersection(vector<string> &v1, vector<string> &v2){
+
     int sum = 0;
     for(unsigned i = 0; i < v1.size(); i++){
         if(v1[i] == v2[i] && v1[i] == "1" && v2[i] == "1"){
@@ -122,7 +127,6 @@ vector<string> Graph::Dijkstra(string source, string destination){
         std::pair<string, int> curr_node = q.top();
         string curr_vertex = curr_node.first;
         q.pop();
-        
         //mark current node as visited
         visited.insert(curr_vertex);
         
@@ -140,9 +144,11 @@ vector<string> Graph::Dijkstra(string source, string destination){
     }
 
     //extract path from previous
+
     if(prev_map.find(destination) == prev_map.end()){
         return vector<Vertex>();
     } 
+  
     vector<string> path;
     string curr = destination;
     while(curr != source){
@@ -152,6 +158,33 @@ vector<string> Graph::Dijkstra(string source, string destination){
     path.push_back(source);
     std::reverse(path.begin(), path.end());
     return path;
+}
+
+
+int Graph::centrality(Vertex vertex){
+    vector<Vertex> vertices = this->getVertices();
+    unordered_map<Vertex, int> dict_of_measures;
+
+    for(unsigned i = 0; i < vertices.size()-1; i++){
+        for(unsigned j = i+1; j < vertices.size(); j++){
+            vector<Vertex> path = Dijkstra(vertices[i], vertices[j]);
+            vector<Vertex> reversePath = Dijkstra(vertices[j], vertices[i]);
+            if(path.size() > 2){
+                for(unsigned k = 1; k < path.size()-1; k++){
+                    dict_of_measures[path[k]] = dict_of_measures[path[k]] + 1;
+                    cout << path[k] << ": " << dict_of_measures[path[k]] << endl;
+                }
+            }
+            if(reversePath.size() > 2){
+                for(unsigned k = 1; k < reversePath.size()-1; k++){
+                    dict_of_measures[reversePath[k]] = dict_of_measures[reversePath[k]] + 1;
+                    cout << reversePath[k] << ": " << dict_of_measures[reversePath[k]] << endl;
+                }
+            }
+        }
+    }
+
+    return dict_of_measures[vertex];
 }
 //////////////////////////////////////////////////////////
 

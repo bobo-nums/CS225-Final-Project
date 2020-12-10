@@ -98,6 +98,8 @@ public:
      * @return a vector containing shortest path
      */
     vector<string> Dijkstra(string source, string destination);
+ 
+    int centrality(Vertex);
     //////////////////////////////////////////////////////////////////////////
 
     /**

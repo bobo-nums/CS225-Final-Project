@@ -140,7 +140,7 @@ TEST_CASE("Dijkstra - Basic test", "[weight=1]"){
     vector<string> expected = {"0", "2", "4", "3", "5"};
     vector<string> result = g.Dijkstra("0", "5");
     for(unsigned i = 0; i < expected.size(); i++){
-		REQUIRE(expected[i] == result[i]);
+		  REQUIRE(expected[i] == result[i]);
 	}
 }
 
@@ -353,4 +353,55 @@ TEST_CASE("Dijkstra Test - Cycle", "[weight=1]"){
     for(unsigned i = 0; i < expected.size(); i++){
 		REQUIRE(expected[i] == result[i]);
 	}
+}
+
+/** 
+* ===================================================================================
+*                          Betweenness centrality test cases
+* ===================================================================================
+*/
+
+TEST_CASE("Simple Centrality", "[weight=1"){
+  Graph g(true, true);
+	g.insertVertex("one");
+	g.insertVertex("two");
+	g.insertVertex("three");
+	g.insertVertex("four");
+
+	g.insertEdge("one", "three");
+	g.setEdgeWeight("one", "three", 1);
+
+	g.insertEdge("two", "three");
+	g.setEdgeWeight("two", "three", 1);
+
+	g.insertEdge("three", "four");
+	g.setEdgeWeight("three", "four", 1);
+
+  int result = g.centrality("three");
+  int expected = 2;
+  REQUIRE(expected == result);
+}
+
+/** 
+* ===================================================================================
+*                               Other test cases
+* ===================================================================================
+*/
+
+TEST_CASE("getAdjacent returns outgoing edges", "[weight=1]"){
+  Graph g(true, true);
+	g.insertVertex("one");
+	g.insertVertex("two");
+  g.insertVertex("three");
+
+	g.insertEdge("one", "two");
+	g.setEdgeWeight("one", "two", 1);
+
+  g.insertEdge("two", "three");
+	g.setEdgeWeight("two", "three", 1);
+
+  vector<Vertex> adj = g.getAdjacent("two");
+  Vertex expected = "three";
+  REQUIRE(adj.size() == 1);
+  REQUIRE(adj[0] == expected);
 }
