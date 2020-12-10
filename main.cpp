@@ -10,7 +10,7 @@ using namespace std;
 // Usage: 	./finalproj [egoNode] [dfs, dijkstra, centrality] [source node] [destination node (for dijkstra)]
 
 int main(int argc, const char* argv[]){
-	// 
+	// Initialize variables & parse input 
 	Vertex egoNode = argv[1];
 	vector<Vertex> edges;
 	vector<Vertex> egoFeatures;
@@ -70,6 +70,12 @@ int main(int argc, const char* argv[]){
 	}
 	// Run Betweenness Centrality algorithm
 	// if(centrality){
+	// 	vector<string> centrality_result = G.Centrality(source);
+	// 	cout << "Betweenness Centrality Output" << endl;
+	// 	for(unsigned i = 0; i < centrality_result.size(); i++){
+	// 		cout << centrality_result[i] << " ";
+	// 	}
+	// 	cout << endl;
 	// }
 
 }

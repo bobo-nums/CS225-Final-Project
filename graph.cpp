@@ -162,7 +162,6 @@ vector<Vertex> Graph::getAdjacent(Vertex source) const
         {
             vertex_list.push_back(it->first);
         }
-        reverse(vertex_list.begin(), vertex_list.end());
         return vertex_list;
     }
 }

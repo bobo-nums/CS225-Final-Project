@@ -1,39 +1,146 @@
 #include "../graph.h"
 #include "../cs225/catch/catch.hpp"
 
+TEST_CASE("DFS Test - No outgoing paths", "[weight=1]"){
+    // https://i.gyazo.com/7cd42322c2cfd471c7841229f5e9566d.png
+    Graph g(true, true);
+    g.insertVertex("0");
+    g.insertVertex("1");
+    g.insertVertex("2");
+    g.insertVertex("3");
+
+    g.insertEdge("1", "0");
+    g.insertEdge("2", "1");
+    g.insertEdge("3", "0");
+    g.insertEdge("3", "2");
+
+    vector<string> expected = {"0"};
+    vector<string> result = g.DFS("0");
+	REQUIRE(expected[0] == result[0]);
+}
+
+TEST_CASE("DFS Test - Connected Graph", "[weight=1]"){
+    // https://i.gyazo.com/5774678812e25f4cba1ca83f70915514.png
+    Graph g(true, true);
+    g.insertVertex("0");
+    g.insertVertex("1");
+    g.insertVertex("2");
+    g.insertVertex("3");
+    g.insertVertex("4");
+
+    g.insertEdge("0", "1");
+    g.insertEdge("0", "2");
+    g.insertEdge("0", "3");
+    g.insertEdge("1", "3");
+    g.insertEdge("1", "4");
+    g.insertEdge("2", "4");
+    g.insertEdge("3", "4");
+
+    vector<string> expected = {"0", "1", "3", "4", "2"};
+    vector<string> result = g.DFS("0");
+    for(unsigned i = 0; i < expected.size(); i++){
+		REQUIRE(expected[i] == result[i]);
+	}
+}
+
+TEST_CASE("DFS Test - Disconnected Graph", "[weight=1]"){
+    // https://i.gyazo.com/988a156201881b465b97f8264fe2260a.png
+    Graph g(true, true);
+    g.insertVertex("0");
+    g.insertVertex("1");
+    g.insertVertex("2");
+    g.insertVertex("3");
+    g.insertVertex("4");
+    g.insertVertex("5");
+    g.insertVertex("6");
+    g.insertVertex("7");
+
+    g.insertEdge("0", "1");
+    g.insertEdge("0", "2");
+    g.insertEdge("1", "2");
+    g.insertEdge("1", "3");
+    g.insertEdge("2", "3");
+    g.insertEdge("3", "4");
+    g.insertEdge("5", "7");
+    g.insertEdge("7", "6");
+
+    vector<string> expected = {"0", "1", "2", "3", "4"};
+    vector<string> result = g.DFS("0");
+    for(unsigned i = 0; i < expected.size(); i++){
+		REQUIRE(expected[i] == result[i]);
+	}
+
+    expected = {"5", "7", "6"};
+    result = g.DFS("5");
+    for(unsigned i = 0; i < expected.size(); i++){
+		REQUIRE(expected[i] == result[i]);
+	}
+}
+
+TEST_CASE("DFS Test - Cycle", "[weight=1]"){
+    // https://i.gyazo.com/1a399064a5eb5d7c1f703da15bc30f35.png
+    Graph g(true, true);
+    g.insertVertex("0");
+    g.insertVertex("1");
+    g.insertVertex("2");
+    g.insertVertex("3");
+    g.insertVertex("4");
+    g.insertVertex("5");
+    g.insertVertex("6");
+    g.insertVertex("7");
+
+    g.insertEdge("0", "1");
+    g.insertEdge("1", "3");
+    g.insertEdge("2", "1");
+    g.insertEdge("3", "2");
+    g.insertEdge("3", "4");
+    g.insertEdge("4", "5");
+    g.insertEdge("5", "7");
+    g.insertEdge("6", "4");
+    g.insertEdge("7", "6");
+
+    vector<string> expected = {"0", "1", "3", "2", "4", "5", "7", "6"};
+    vector<string> result = g.DFS("0");
+    for(unsigned i = 0; i < expected.size(); i++){
+		REQUIRE(expected[i] == result[i]);
+	}
+}
+
+
+
 TEST_CASE("Dijkstra1 test", "[weight=1]"){
 
     Graph g(true, true);
-	g.insertVertex("one");
-	g.insertVertex("two");
-	g.insertVertex("three");
-	g.insertVertex("four");
-	g.insertVertex("five");
-	g.insertVertex("six");
+	g.insertVertex("1");
+	g.insertVertex("2");
+	g.insertVertex("3");
+	g.insertVertex("4");
+	g.insertVertex("5");
+	g.insertVertex("6");
 
-	g.insertEdge("one", "two");
-	g.setEdgeWeight("one", "two", 6);
+	g.insertEdge("1", "2");
+	g.setEdgeWeight("1", "2", 6);
 
-	g.insertEdge("one", "three");
-	g.setEdgeWeight("one", "three", 2);
+	g.insertEdge("1", "3");
+	g.setEdgeWeight("1", "3", 2);
 
-	g.insertEdge("one", "four");
-	g.setEdgeWeight("one", "four", 3);
+	g.insertEdge("1", "4");
+	g.setEdgeWeight("1", "4", 3);
 
-	g.insertEdge("two", "five");
-	g.setEdgeWeight("two", "five", 1);
+	g.insertEdge("2", "5");
+	g.setEdgeWeight("2", "5", 1);
 
-	g.insertEdge("four", "five");
-	g.setEdgeWeight("four", "five", 3);
+	g.insertEdge("4", "5");
+	g.setEdgeWeight("4", "5", 3);
 
-	g.insertEdge("three", "five");
-	g.setEdgeWeight("three", "five", 1);
+	g.insertEdge("3", "5");
+	g.setEdgeWeight("3", "5", 1);
 
 	vector<string> expected;
-	vector<string> result = g.Dijkstra("one", "five");
-    expected.push_back("one");
-	expected.push_back("three");
-	expected.push_back("five");
+	vector<string> result = g.Dijkstra("1", "5");
+    expected.push_back("1");
+	expected.push_back("3");
+	expected.push_back("5");
 
 	for(unsigned i = 0; i < expected.size(); i++){
 		REQUIRE(expected[i] == result[i]);
@@ -100,37 +207,37 @@ TEST_CASE("Dijkstra2 test", "[weight=1]"){
 TEST_CASE("Dijkstra3 test", "[weight=1]"){
     Graph G(true, true);
 
-    G.insertVertex("one");
-    G.insertVertex("two");
-    G.insertVertex("three");
-    G.insertVertex("four");
-    G.insertVertex("five");
-    G.insertVertex("six");
+    G.insertVertex("1");
+    G.insertVertex("2");
+    G.insertVertex("3");
+    G.insertVertex("4");
+    G.insertVertex("5");
+    G.insertVertex("6");
 
-    G.insertEdge("one", "two");
-    G.setEdgeWeight("one", "two", 4);
-    G.insertEdge("one", "three");
-    G.setEdgeWeight("one", "three", 2);
-    G.insertEdge("two", "three");
-    G.setEdgeWeight("two", "three", 5);
-    G.insertEdge("two", "four");
-    G.setEdgeWeight("two", "four", 10);
-    G.insertEdge("three", "five");
-    G.setEdgeWeight("three", "five", 3);
-    G.insertEdge("five", "four");
-    G.setEdgeWeight("five", "four", 4);
-    G.insertEdge("four", "six");
-    G.setEdgeWeight("four", "six", 11);
+    G.insertEdge("1", "2");
+    G.setEdgeWeight("1", "2", 4);
+    G.insertEdge("1", "3");
+    G.setEdgeWeight("1", "3", 2);
+    G.insertEdge("2", "3");
+    G.setEdgeWeight("2", "3", 5);
+    G.insertEdge("2", "4");
+    G.setEdgeWeight("2", "4", 10);
+    G.insertEdge("3", "5");
+    G.setEdgeWeight("3", "5", 3);
+    G.insertEdge("5", "4");
+    G.setEdgeWeight("5", "4", 4);
+    G.insertEdge("4", "6");
+    G.setEdgeWeight("4", "6", 11);
 
     vector<string> sol_path, test;
 
-    sol_path.push_back("one");
-    sol_path.push_back("three");
-    sol_path.push_back("five");
-    sol_path.push_back("four");
-    sol_path.push_back("six");
+    sol_path.push_back("1");
+    sol_path.push_back("3");
+    sol_path.push_back("5");
+    sol_path.push_back("4");
+    sol_path.push_back("6");
 
-    test = G.Dijkstra("one", "six");
+    test = G.Dijkstra("1", "6");
 
     for(size_t i=0; i<4; i++){
         REQUIRE(test[i] == sol_path[i]);
