@@ -26,7 +26,7 @@ void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoN
         this->insertVertex(edges[i]);
         this->insertEdge(egoNode, edges[i]);
     }
-    for(unsigned i = 0; i < edges.size()/2; i++){
+    for(unsigned i = 0; i < edges.size(); i+=2){
         this->insertEdge(edges[i], edges[i+1]);
     }
 
@@ -39,18 +39,6 @@ void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoN
     }
 
     fillWeights();
-    // vector<Vertex> adjvect = this->getAdjacent(egoNode);
-	// for(unsigned i = 0; i<adjvect.size(); i++){
-	// 	cout << adjvect[i] << " ";
-	// }
-
-    //test if feature_map stores ego nodes features
-    // cout << egoNode << " ";
-    // vector<string> egoFeatures = feature_map[egoNode];
-    // for(unsigned i = 0; i < egoFeatures.size(); i ++){
-    //     cout << egoFeatures[i] << " ";
-    // }
-
 }
 
 void Graph::fillWeights(){
@@ -65,18 +53,19 @@ void Graph::fillWeights(){
     }
 }
 
-unsigned Graph::intersection(vector<string> &v1, vector<string> &v2){
+int Graph::intersection(vector<string> &v1, vector<string> &v2){
     
-    unsigned sum = 0;
+    int sum = 0;
     for(unsigned i = 0; i < v1.size(); i++){
         if(v1[i] == v2[i] && v1[i] == "1" && v2[i] == "1"){
             sum++;
         }
     }
-    return INT_MAX - sum;
+    return 1364 - sum;
 }
 
-void Graph::DFS(string start_vertex){
+vector<string> Graph::DFS(string start_vertex){
+    vector<string> result;
     set<string> visited; 
     
     stack<string> stk;
@@ -88,7 +77,7 @@ void Graph::DFS(string start_vertex){
         stk.pop();
 
         if(visited.find(curr_vertex) == visited.end()){
-            cout << curr_vertex << endl;
+            result.push_back(curr_vertex);
             visited.insert(curr_vertex);
         }
 
@@ -98,6 +87,7 @@ void Graph::DFS(string start_vertex){
             }
         }
     }
+    return result;
 }
 
 
@@ -118,8 +108,6 @@ vector<string> Graph::Dijkstra(string source, string destination){
     typedef std::priority_queue<std::pair<string, int>, vector<std::pair<string, int>>, CompareWeight> myqueue;
     myqueue q;   // initialize the priority queue of vertex distance pairs
     std::set<string> visited;   //initialize visited set to check which vertices have been visited
-
-    vector<pair<string, string>> allPaths;  // vector that contains all the smallest paths
 
     for(Vertex v : vertices){
         distances[v] = INT_MAX;
@@ -144,18 +132,10 @@ vector<string> Graph::Dijkstra(string source, string destination){
                     distances[neighbor] = dist;
                     prev_map[neighbor] = curr_vertex;
                     q.push(std::pair<string, int>(neighbor, dist));
-                    allPaths.push_back(pair<string, string>(curr_vertex, neighbor));
                 }
             }
         }
     }
-    // findAllPaths
-    vector<string> result;
-    findAllPaths(allPaths, source, destination, "", result);
-    // for(unsigned i = 0; i < result.size(); i++){
-    //     cout << result[i] << endl;
-    // }
-    // cout << endl;
 
     //extract path from previous
     vector<string> path;
@@ -167,27 +147,6 @@ vector<string> Graph::Dijkstra(string source, string destination){
     path.push_back(source);
     std::reverse(path.begin(), path.end());
     return path;
-}
-
-void Graph::findAllPaths(vector<pair<string, string>> input, string source, string destination, string result, vector<string>& resultVector){
-    for(unsigned i = 0; i < input.size(); i++){
-        if(input[i].first == source){
-            if(result.find(input[i].first + " ") == string::npos){
-                result.append(input[i].first + " ");
-            }
-            if(input[i].second == destination){
-                if(result.find(input[i].second + " ") == string::npos){
-                    result.append(input[i].second + " ");
-                }
-                resultVector.push_back(result);
-                return;
-            }
-            else{
-                findAllPaths(input, input[i].second, destination, result, resultVector);
-            }
-        }
-    }
-    return;
 }
 //////////////////////////////////////////////////////////
 
@@ -207,6 +166,7 @@ vector<Vertex> Graph::getAdjacent(Vertex source) const
         {
             vertex_list.push_back(it->first);
         }
+        reverse(vertex_list.begin(), vertex_list.end());
         return vertex_list;
     }
 }

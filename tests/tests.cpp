@@ -30,7 +30,7 @@ TEST_CASE("Dijkstra1 test", "[weight=1]"){
 	g.setEdgeWeight("three", "five", 1);
 
 	vector<string> expected;
-	vector<string> result = g.Dijkstra("one", "five", 0);
+	vector<string> result = g.Dijkstra("one", "five");
     expected.push_back("one");
 	expected.push_back("three");
 	expected.push_back("five");
@@ -92,7 +92,7 @@ TEST_CASE("Dijkstra2 test", "[weight=1]"){
     sol_path.push_back("5");
     sol_path.push_back("4");
 
-    test = G.Dijkstra("0", "4", 0);
+    test = G.Dijkstra("0", "4");
     for(size_t i=0; i<4; i++){
         REQUIRE(test[i] == sol_path[i]);
     }
@@ -130,7 +130,7 @@ TEST_CASE("Dijkstra3 test", "[weight=1]"){
     sol_path.push_back("four");
     sol_path.push_back("six");
 
-    test = G.Dijkstra("one", "six", 0);
+    test = G.Dijkstra("one", "six");
 
     for(size_t i=0; i<4; i++){
         REQUIRE(test[i] == sol_path[i]);

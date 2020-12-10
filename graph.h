@@ -65,10 +65,9 @@ public:
     //////////////////////////////////////////////////////////////////////////
     void fillGraph(vector<Vertex>, vector<string>, string);
     void fillWeights();
-    unsigned intersection(vector<string>&, vector<string>&);
-    void DFS(string);
+    int intersection(vector<string>&, vector<string>&);
+    vector<string> DFS(string);
     vector<string> Dijkstra(string, string);
-    void findAllPaths(vector<pair<string, string>>, string, string, string, vector<string>&);
 
     //////////////////////////////////////////////////////////////////////////
     /**
