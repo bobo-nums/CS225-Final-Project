@@ -152,10 +152,10 @@ vector<string> Graph::Dijkstra(string source, string destination){
     // findAllPaths
     vector<string> result;
     findAllPaths(allPaths, source, destination, "", result);
-    for(unsigned i = 0; i < result.size(); i++){
-        cout << result[i] << endl;
-    }
-    cout << endl;
+    // for(unsigned i = 0; i < result.size(); i++){
+    //     cout << result[i] << endl;
+    // }
+    // cout << endl;
 
     //extract path from previous
     vector<string> path;
