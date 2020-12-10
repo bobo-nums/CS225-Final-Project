@@ -20,7 +20,7 @@ Graph::Graph(bool weighted, bool directed) : weighted(weighted),directed(directe
 
 //////////////////////////////////////////////////////////
 
-void Graph::fillGraph(vector<string> edges, string egoNode){
+void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoNode){
     this->insertVertex(egoNode);
     for(unsigned i = 0; i < edges.size(); i++){
         this->insertVertex(edges[i]);
@@ -29,6 +29,22 @@ void Graph::fillGraph(vector<string> edges, string egoNode){
     for(unsigned i = 0; i < edges.size()/2; i++){
         this->insertEdge(edges[i], edges[i+1]);
     }
+
+    //number of features 1364
+    unsigned data_interval = 1365;
+    for(unsigned i = 0; i < features.size(); i += data_interval){
+        for(unsigned j = i+1; j < i + data_interval; j++){
+            feature_map[features[i]].push_back(features[j]);
+        }
+    }
+
+    //test if feature_map stores ego nodes features
+    // cout << egoNode << " ";
+    // vector<string> egoFeatures = feature_map[egoNode];
+    // for(unsigned i = 0; i < egoFeatures.size(); i ++){
+    //     cout << egoFeatures[i] << " ";
+    // }
+
 }
 
 // void Graph::fillWeights(int featureIndex){
