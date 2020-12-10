@@ -68,7 +68,7 @@ public:
     unsigned intersection(vector<string>&, vector<string>&);
     void DFS(string);
     vector<string> Dijkstra(string, string);
-    string helper(vector<pair<string, string>>, string, string, string);
+    void findAllPaths(vector<pair<string, string>>, string, string, string, vector<string>&);
 
     //////////////////////////////////////////////////////////////////////////
     /**

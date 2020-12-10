@@ -38,14 +38,50 @@ int main(int argc, const char* argv[]){
 	// 	cout << features[i] << " ";
 	// }
 
-	Graph G(true, true);
-	G.fillGraph(edges, features, egoNode);
-	//G.DFS(egoNode);
-	G.print();
+	// Graph G(true, true);
+	// G.fillGraph(edges, features, egoNode);
+	// //G.DFS(egoNode);
+	// // G.print();
 
-	vector<Vertex> path = G.Dijkstra("668423", "14471007");
-	for(unsigned i = 0; i < path.size(); i++){
-		cout << path[i] << " ";
+	// string test1 = "663463";
+	// string test2 = "9616792";
+	// cout << "Test Dijkstra: " << test1 << ", " << test2 << endl;
+	// vector<Vertex> path = G.Dijkstra(test1, test2);
+	// for(unsigned i = 0; i < path.size(); i++){
+	// 	cout << path[i] << " ";
+	// }
+	// cout << endl;
+
+	Graph g(true, true);
+    g.insertVertex("one");
+    g.insertVertex("two");
+    g.insertVertex("three");
+    g.insertVertex("four");
+    g.insertVertex("five");
+    g.insertVertex("six");
+
+    g.insertEdge("one", "two");
+    g.setEdgeWeight("one", "two", 6);
+
+    g.insertEdge("one", "three");
+    g.setEdgeWeight("one", "three", 2);
+
+    g.insertEdge("one", "four");
+    g.setEdgeWeight("one", "four", 3);
+
+    g.insertEdge("two", "five");
+    g.setEdgeWeight("two", "five", 1);
+
+    g.insertEdge("four", "five");
+    g.setEdgeWeight("four", "five", 3);
+
+    g.insertEdge("three", "five");
+    g.setEdgeWeight("three", "five", 1);
+
+	g.print();
+    vector<string> result = g.Dijkstra("one", "five");
+	for(unsigned i = 0; i < result.size(); i++){
+		cout << result[i] << " ";
 	}
-	cout << endl;
+	cout << endl;	
 }

@@ -73,7 +73,7 @@ unsigned Graph::intersection(vector<string> &v1, vector<string> &v2){
             sum++;
         }
     }
-    return sum;
+    return INT_MAX - sum;
 }
 
 void Graph::DFS(string start_vertex){
@@ -108,7 +108,7 @@ vector<string> Graph::Dijkstra(string source, string destination){
         bool operator()(std::pair<string, int> const& a, std::pair<string, int> const& b) 
         { 
             //return true if vertex a's value > vertex b's value
-            return a.second < b.second; 
+            return a.second > b.second; 
         } 
     };
 
@@ -119,7 +119,7 @@ vector<string> Graph::Dijkstra(string source, string destination){
     myqueue q;   // initialize the priority queue of vertex distance pairs
     std::set<string> visited;   //initialize visited set to check which vertices have been visited
 
-    vector<pair<string, string>> test;
+    vector<pair<string, string>> allPaths;  // vector that contains all the smallest paths
 
     for(Vertex v : vertices){
         distances[v] = INT_MAX;
@@ -144,23 +144,18 @@ vector<string> Graph::Dijkstra(string source, string destination){
                     distances[neighbor] = dist;
                     prev_map[neighbor] = curr_vertex;
                     q.push(std::pair<string, int>(neighbor, dist));
-                    test.push_back(pair<string, string>(neighbor, curr_vertex));
+                    allPaths.push_back(pair<string, string>(curr_vertex, neighbor));
                 }
             }
         }
     }
-    // test vector prev
+    // findAllPaths
     vector<string> result;
-    for(unsigned i = 0; i < test.size(); i++){
-        if(test[i].second != source){
-            break;
-        }
-        string push = helper(test, source, destination, "");
-        result.push_back(push);
-    }
+    findAllPaths(allPaths, source, destination, "", result);
     for(unsigned i = 0; i < result.size(); i++){
         cout << result[i] << endl;
     }
+    cout << endl;
 
     //extract path from previous
     vector<string> path;
@@ -169,24 +164,30 @@ vector<string> Graph::Dijkstra(string source, string destination){
         path.push_back(curr);
         curr = prev_map[curr];
     }
+    path.push_back(source);
     std::reverse(path.begin(), path.end());
     return path;
 }
 
-string Graph::helper(vector<pair<string, string>> test, string source, string destination, string result){
-    for(unsigned i = 0; i < test.size(); i++){
-        if(test[i].second == source){
-            result.append(test[i].second);
-            if(test[i].first == destination){
-                result.append(test[i].first);
-                return result;
+void Graph::findAllPaths(vector<pair<string, string>> input, string source, string destination, string result, vector<string>& resultVector){
+    for(unsigned i = 0; i < input.size(); i++){
+        if(input[i].first == source){
+            if(result.find(input[i].first + " ") == string::npos){
+                result.append(input[i].first + " ");
             }
-            else {
-                helper(test, test[i].first, destination, result);
+            if(input[i].second == destination){
+                if(result.find(input[i].second + " ") == string::npos){
+                    result.append(input[i].second + " ");
+                }
+                resultVector.push_back(result);
+                return;
+            }
+            else{
+                findAllPaths(input, input[i].second, destination, result, resultVector);
             }
         }
     }
-    return result;
+    return;
 }
 //////////////////////////////////////////////////////////
 
