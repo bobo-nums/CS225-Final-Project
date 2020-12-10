@@ -1,6 +1,12 @@
 #include "../graph.h"
 #include "../cs225/catch/catch.hpp"
 
+/** 
+* ===================================================================================
+*                               DFS test cases
+* ===================================================================================
+*/
+
 TEST_CASE("DFS Test - No outgoing paths", "[weight=1]"){
     // https://i.gyazo.com/7cd42322c2cfd471c7841229f5e9566d.png
     Graph g(true, true);
@@ -19,7 +25,7 @@ TEST_CASE("DFS Test - No outgoing paths", "[weight=1]"){
 	REQUIRE(expected[0] == result[0]);
 }
 
-TEST_CASE("DFS Test - Connected Graph", "[weight=1]"){
+TEST_CASE("DFS Test - Connected graph", "[weight=1]"){
     // https://i.gyazo.com/5774678812e25f4cba1ca83f70915514.png
     Graph g(true, true);
     g.insertVertex("0");
@@ -43,17 +49,12 @@ TEST_CASE("DFS Test - Connected Graph", "[weight=1]"){
 	}
 }
 
-TEST_CASE("DFS Test - Disconnected Graph", "[weight=1]"){
+TEST_CASE("DFS Test - Disconnected graph", "[weight=1]"){
     // https://i.gyazo.com/988a156201881b465b97f8264fe2260a.png
     Graph g(true, true);
-    g.insertVertex("0");
-    g.insertVertex("1");
-    g.insertVertex("2");
-    g.insertVertex("3");
-    g.insertVertex("4");
-    g.insertVertex("5");
-    g.insertVertex("6");
-    g.insertVertex("7");
+    for(int i = 0; i < 8; i++){
+        g.insertVertex(to_string(i));
+    }
 
     g.insertEdge("0", "1");
     g.insertEdge("0", "2");
@@ -80,14 +81,9 @@ TEST_CASE("DFS Test - Disconnected Graph", "[weight=1]"){
 TEST_CASE("DFS Test - Cycle", "[weight=1]"){
     // https://i.gyazo.com/1a399064a5eb5d7c1f703da15bc30f35.png
     Graph g(true, true);
-    g.insertVertex("0");
-    g.insertVertex("1");
-    g.insertVertex("2");
-    g.insertVertex("3");
-    g.insertVertex("4");
-    g.insertVertex("5");
-    g.insertVertex("6");
-    g.insertVertex("7");
+    for(int i = 0; i < 8; i++){
+        g.insertVertex(to_string(i));
+    }
 
     g.insertEdge("0", "1");
     g.insertEdge("1", "3");
@@ -106,46 +102,76 @@ TEST_CASE("DFS Test - Cycle", "[weight=1]"){
 	}
 }
 
+/** 
+* ===================================================================================
+*                               Dijkstra test cases
+* ===================================================================================
+*/
 
-
-TEST_CASE("Dijkstra1 test", "[weight=1]"){
-
+TEST_CASE("Dijkstra Test - No outgoing paths", "[weight=1]"){
+    // https://i.gyazo.com/8642a1dfebb404b8bdcaba153d123819.png
     Graph g(true, true);
-	g.insertVertex("1");
-	g.insertVertex("2");
-	g.insertVertex("3");
-	g.insertVertex("4");
-	g.insertVertex("5");
-	g.insertVertex("6");
+    g.insertVertex("0");
+    g.insertVertex("1");
+    g.insertVertex("2");
+    g.insertVertex("3");
 
-	g.insertEdge("1", "2");
-	g.setEdgeWeight("1", "2", 6);
+    g.insertEdge("1", "0");
+    g.setEdgeWeight("1", "0", 1);
 
-	g.insertEdge("1", "3");
-	g.setEdgeWeight("1", "3", 2);
+    g.insertEdge("2", "1");
+    g.setEdgeWeight("2", "1", 2);
+
+    g.insertEdge("3", "0");
+    g.setEdgeWeight("3", "0", 4);
+
+    g.insertEdge("3", "2");
+    g.setEdgeWeight("3", "2", 6);
+
+    vector<string> result = g.Dijkstra("0", "3");
+	REQUIRE(result.size() == 0);
+}
+
+TEST_CASE("Dijkstra Test - Disconnected graph", "[weight=1]"){
+    // https://i.gyazo.com/a71f8359d9cfd74ac01e002872850122.png
+    Graph g(true, true);
+	for(int i = 0; i < 8; i++){
+        g.insertVertex(to_string(i));
+    }
+
+	g.insertEdge("0", "1");
+	g.setEdgeWeight("0", "1", 6);
+
+	g.insertEdge("0", "2");
+	g.setEdgeWeight("0", "2", 2);
+
+	g.insertEdge("0", "3");
+	g.setEdgeWeight("0", "3", 3);
 
 	g.insertEdge("1", "4");
-	g.setEdgeWeight("1", "4", 3);
+	g.setEdgeWeight("1", "4", 1);
 
-	g.insertEdge("2", "5");
-	g.setEdgeWeight("2", "5", 1);
+	g.insertEdge("3", "4");
+	g.setEdgeWeight("3", "4", 3);
 
-	g.insertEdge("4", "5");
-	g.setEdgeWeight("4", "5", 3);
+	g.insertEdge("2", "4");
+	g.setEdgeWeight("2", "4", 1);
 
-	g.insertEdge("3", "5");
-	g.setEdgeWeight("3", "5", 1);
+    g.insertEdge("5", "6");
+	g.setEdgeWeight("5", "6", 1);
 
-	vector<string> expected;
-	vector<string> result = g.Dijkstra("1", "5");
-    expected.push_back("1");
-	expected.push_back("3");
-	expected.push_back("5");
+    g.insertEdge("5", "7");
+	g.setEdgeWeight("5", "7", 5);
 
+	vector<string> expected = {"0", "2", "4"};
+	vector<string> result = g.Dijkstra("0", "4");
 	for(unsigned i = 0; i < expected.size(); i++){
 		REQUIRE(expected[i] == result[i]);
 	}
 }
+
+
+
 TEST_CASE("Dijkstra2 test", "[weight=1]"){
 
     Graph G(true, true);

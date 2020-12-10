@@ -105,6 +105,12 @@ vector<string> Graph::Dijkstra(string source, string destination){
     myqueue q;   // initialize the priority queue of vertex distance pairs
     std::set<string> visited;   //initialize visited set to check which vertices have been visited
 
+    // Check if source has outgoing edges
+    vector<Vertex> adj = this->getAdjacent(source);
+    if(adj.empty()){
+        return vector<Vertex>();
+    }
+
     for(Vertex v : vertices){
         distances[v] = INT_MAX;
     }
