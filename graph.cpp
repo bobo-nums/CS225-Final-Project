@@ -28,6 +28,7 @@ void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoN
         this->insertVertex(edges[i]);
         this->insertEdge(egoNode, edges[i]);
     }
+  
     //iterate through sets of vertices to insert edges
     for(unsigned i = 0; i < edges.size(); i+=2){
         this->insertEdge(edges[i], edges[i+1]);
@@ -40,24 +41,10 @@ void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoN
             feature_map[features[i]].push_back(features[j]);
         }
     }
-
     fillWeights();
-    // vector<Vertex> adjvect = this->getAdjacent(egoNode);
-	// for(unsigned i = 0; i<adjvect.size(); i++){
-	// 	cout << adjvect[i] << " ";
-	// }
-
-    //test if feature_map stores ego nodes features
-    // cout << egoNode << " ";
-    // vector<string> egoFeatures = feature_map[egoNode];
-    // for(unsigned i = 0; i < egoFeatures.size(); i ++){
-    //     cout << egoFeatures[i] << " ";
-    // }
-
 }
 
 void Graph::fillWeights(){
-
     vector<Edge> edges = this->getEdges();
     for(Edge e : edges){
         Vertex source = e.source;
@@ -69,7 +56,7 @@ void Graph::fillWeights(){
 }
 
 int Graph::intersection(vector<string> &v1, vector<string> &v2){
-    
+
     int sum = 0;
     for(unsigned i = 0; i < v1.size(); i++){
         if(v1[i] == v2[i] && v1[i] == "1" && v2[i] == "1"){
@@ -79,7 +66,8 @@ int Graph::intersection(vector<string> &v1, vector<string> &v2){
     return 1364 - sum;
 }
 
-void Graph::DFS(string start_vertex){
+vector<string> Graph::DFS(string start_vertex){
+    vector<string> result;
     set<string> visited; 
     
     stack<string> stk;
@@ -91,7 +79,7 @@ void Graph::DFS(string start_vertex){
         stk.pop();
 
         if(visited.find(curr_vertex) == visited.end()){
-            cout << curr_vertex << endl;
+            result.push_back(curr_vertex);
             visited.insert(curr_vertex);
         }
 
@@ -101,8 +89,8 @@ void Graph::DFS(string start_vertex){
             }
         }
     }
+    return result;
 }
-
 
 vector<string> Graph::Dijkstra(string source, string destination){
 
@@ -122,10 +110,11 @@ vector<string> Graph::Dijkstra(string source, string destination){
     myqueue q;   // initialize the priority queue of vertex distance pairs
     std::set<string> visited;   //initialize visited set to check which vertices have been visited
 
-    //check if source has outgoing edges
+    // Check if source has outgoing edges
     vector<Vertex> adj = this->getAdjacent(source);
-    if(adj.empty()) return vector<Vertex>();
-
+    if(adj.empty()){
+        return vector<Vertex>();
+    }
 
     for(Vertex v : vertices){
         distances[v] = INT_MAX;
@@ -139,7 +128,7 @@ vector<string> Graph::Dijkstra(string source, string destination){
         string curr_vertex = curr_node.first;
         q.pop();
         //mark current node as visited
-        visited.insert(curr_node.first);
+        visited.insert(curr_vertex);
         
         vector<string> neighbors = this->getAdjacent(curr_vertex);
         for(string neighbor : neighbors){
@@ -153,8 +142,13 @@ vector<string> Graph::Dijkstra(string source, string destination){
             }
         }
     }
+
     //extract path from previous
-    if(prev_map.find(destination) == prev_map.end()) return vector<Vertex>();
+
+    if(prev_map.find(destination) == prev_map.end()){
+        return vector<Vertex>();
+    } 
+  
     vector<string> path;
     string curr = destination;
     while(curr != source){

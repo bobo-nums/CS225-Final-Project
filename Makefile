@@ -27,4 +27,5 @@ CLANG_VERSION_MSG = $(error $(ccred) On EWS, please run 'module load llvm/6.0.1'
 endif
 else
 CLANG_VERSION_MSG = $(warning $(ccyellow) Looks like you are not on EWS. Be sure to test on EWS before the deadline. $(ccend))
+
 endif
