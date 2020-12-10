@@ -17,25 +17,54 @@ Graph::Graph(bool weighted, bool directed) : weighted(weighted),directed(directe
 }
 
 
-
-//////////////////////////////////////////////////////////
-
-void Graph::fillGraph(vector<string> edges, string egoNode){
+// =============================================================================================================
+void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoNode){
     this->insertVertex(egoNode);
+    //iterate through vector of edges and add all vertices
+    //do not worry about duplicates
     for(unsigned i = 0; i < edges.size(); i++){
         this->insertVertex(edges[i]);
         this->insertEdge(egoNode, edges[i]);
     }
-    for(unsigned i = 0; i < edges.size()/2; i++){
+  
+    //iterate through sets of vertices to insert edges
+    for(unsigned i = 0; i < edges.size(); i+=2){
         this->insertEdge(edges[i], edges[i+1]);
+    }
+
+    //number of features 1364
+    unsigned data_interval = 1365;
+    for(unsigned i = 0; i < features.size(); i += data_interval){
+        for(unsigned j = i+1; j < i + data_interval; j++){
+            feature_map[features[i]].push_back(features[j]);
+        }
+    }
+    fillWeights();
+}
+
+void Graph::fillWeights(){
+    vector<Edge> edges = this->getEdges();
+    for(Edge e : edges){
+        Vertex source = e.source;
+        Vertex dest = e.dest;
+        unsigned num_common = intersection(feature_map[source], feature_map[dest]);
+
+        this->setEdgeWeight(source, dest, num_common);
     }
 }
 
-// void Graph::fillWeights(int featureIndex){
+int Graph::intersection(vector<string> &v1, vector<string> &v2){
+    int sum = 0;
+    for(unsigned i = 0; i < v1.size(); i++){
+        if(v1[i] == v2[i] && v1[i] == "1" && v2[i] == "1"){
+            sum++;
+        }
+    }
+    return 1364 - sum;
+}
 
-// }
-
-void Graph::DFS(string start_vertex){
+vector<string> Graph::DFS(string start_vertex){
+    vector<string> result;
     set<string> visited; 
     
     stack<string> stk;
@@ -47,7 +76,7 @@ void Graph::DFS(string start_vertex){
         stk.pop();
 
         if(visited.find(curr_vertex) == visited.end()){
-            cout << curr_vertex << endl;
+            result.push_back(curr_vertex);
             visited.insert(curr_vertex);
         }
 
@@ -57,11 +86,10 @@ void Graph::DFS(string start_vertex){
             }
         }
     }
+    return result;
 }
 
-
 vector<string> Graph::Dijkstra(string source, string destination){
-
     //struct for comparison function of priority queue
     struct CompareWeight { 
         bool operator()(std::pair<string, int> const& a, std::pair<string, int> const& b) 
@@ -78,6 +106,11 @@ vector<string> Graph::Dijkstra(string source, string destination){
     myqueue q;   // initialize the priority queue of vertex distance pairs
     std::set<string> visited;   //initialize visited set to check which vertices have been visited
 
+    // Check if source has outgoing edges
+    vector<Vertex> adj = this->getAdjacent(source);
+    if(adj.empty()){
+        return vector<Vertex>();
+    }
 
     for(Vertex v : vertices){
         distances[v] = INT_MAX;
@@ -85,14 +118,14 @@ vector<string> Graph::Dijkstra(string source, string destination){
     distances[source] = 0;
     q.push(std::pair<string, int>(source, 0));
 
-    while(q.top().first != destination){
+    while(q.top().first != destination && !q.empty()){
         //get the pair from priority_queue
         std::pair<string, int> curr_node = q.top();
         string curr_vertex = curr_node.first;
         q.pop();
-        
+
         //mark current node as visited
-        visited.insert(curr_node.first);
+        visited.insert(curr_vertex);
         
         vector<string> neighbors = this->getAdjacent(curr_vertex);
         for(string neighbor : neighbors){
@@ -106,6 +139,11 @@ vector<string> Graph::Dijkstra(string source, string destination){
             }
         }
     }
+
+    if(prev_map.find(destination) == prev_map.end()){
+        return vector<Vertex>();
+    } 
+  
     //extract path from previous
     vector<string> path;
     string curr = destination;
@@ -113,10 +151,35 @@ vector<string> Graph::Dijkstra(string source, string destination){
         path.push_back(curr);
         curr = prev_map[curr];
     }
+    path.push_back(source);
     std::reverse(path.begin(), path.end());
     return path;
 }
-//////////////////////////////////////////////////////////
+
+int Graph::centrality(Vertex vertex){
+    vector<Vertex> vertices = this->getVertices();
+    unordered_map<Vertex, int> dict_of_measures;
+
+    // Go through every combination of two vertices, and store the frequency of each node in a map
+    for(unsigned i = 0; i < vertices.size()-1; i++){
+        for(unsigned j = i+1; j < vertices.size(); j++){
+            vector<Vertex> path = Dijkstra(vertices[i], vertices[j]);
+            vector<Vertex> reversePath = Dijkstra(vertices[j], vertices[i]);
+            if(path.size() > 2){
+                for(unsigned k = 1; k < path.size()-1; k++){
+                    dict_of_measures[path[k]] = dict_of_measures[path[k]] + 1;
+                }
+            }
+            if(reversePath.size() > 2){
+                for(unsigned k = 1; k < reversePath.size()-1; k++){
+                    dict_of_measures[reversePath[k]] = dict_of_measures[reversePath[k]] + 1;
+                }
+            }
+        }
+    }
+    return dict_of_measures[vertex];
+}
+// =============================================================================================================
 
 
 vector<Vertex> Graph::getAdjacent(Vertex source) const 

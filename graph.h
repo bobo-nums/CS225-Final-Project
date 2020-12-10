@@ -63,11 +63,50 @@ public:
 
 
     //////////////////////////////////////////////////////////////////////////
-    void fillGraph(vector<string>, string);
-    void DFS(string);
-    vector<string> Dijkstra(string, string);
+    /**
+     * Fills our graph with vertices, edges, and weights
+     * @param edges - all of the edges from .edges file
+     * @param features - vector of features for all nodes
+     * @param egoNode - initial node that is connected to all others
+     */
+    void fillGraph(vector<Vertex> edges, vector<string> features, string egoNode);
 
+    /**
+     * Sets the edge weights based on number of features in common
+     */
+    void fillWeights();
+
+    /**
+     * Computes the intersection between two feature vectors
+     * @param v1 - feature vector 1
+     * @param v2 - feature vector 2
+     * @return number of features in common
+     */
+    int intersection(vector<string>& v1, vector<string>& v2);
+
+    /**
+     * Performs DFS on a given vertex
+     * @param start_vertex - node to start DFS
+     * @return a vector containing the DFS path
+     */
+    vector<string> DFS(string start_vertex);
+
+     /**
+     * Uses Dijkstra's algorithm to compute shortest path between two nodes
+     * @param source - start node
+     * @param destination - end node
+     * @return a vector containing shortest path
+     */
+    vector<string> Dijkstra(string source, string destination);
+ 
+    /**
+     * Uses the Betweenness centrality algorithm to compute centrality of a given node
+     * @param vertex - node we want to find the centrality of
+     * @return the centrality of the node
+     */
+    int centrality(Vertex vertex);
     //////////////////////////////////////////////////////////////////////////
+
     /**
      * Gets all adjacent vertices to the parameter vertex.
      * @param source - vertex to get neighbors from
@@ -229,6 +268,12 @@ private:
     //Random random;
     int picNum;
     string picName;
+
+    /////////////////////////////////////////////////
+    //A map of all vertices and their corresponding features
+    // ie  12831 [0,0,0,1,1,0,1,0,0,0,0]
+    unordered_map<Vertex, vector<string>> feature_map;
+    /////////////////////////////////////////////////
 
 
     /**

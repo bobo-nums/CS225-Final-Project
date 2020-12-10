@@ -1,7 +1,13 @@
-EXENAME = finalproj
+EXE = finalproj
+TEST = test
 
-EXE_OBJS = main.o
-OBJS = readFromFile.o main.o graph.o
+# Add all object files needed for compiling:
+EXE_OBJ = main.o
+OBJS = main.o graph.o readFromFile.o
+
+
+# Use the cs225 makefile template:
+include cs225/make/cs225.mk
 
 CXX = clang++
 CXXFLAGS = $(CS225) -std=c++1y -stdlib=libc++ -c -g -O0 -Wall -Wextra -pedantic
@@ -21,22 +27,5 @@ CLANG_VERSION_MSG = $(error $(ccred) On EWS, please run 'module load llvm/6.0.1'
 endif
 else
 CLANG_VERSION_MSG = $(warning $(ccyellow) Looks like you are not on EWS. Be sure to test on EWS before the deadline. $(ccend))
+
 endif
-
-.PHONY: all clean output_msg #test
-
-all : $(EXENAME)
-
-output_msg: ; $(CLANG_VERSION_MSG)
-
-$(EXENAME): output_msg $(OBJS)
-	$(LD) $(OBJS) $(LDFLAGS) -o $(EXENAME)
-
-# readFromFile.o: main.cpp readFromFile.cpp graph.cpp dijkstra.cpp
-# 	$(CXX) $(CXXFLAGS) main.cpp readFromFile.cpp graph.cpp dijkstra.cpp
-
-# test: output_msg catch/catchmain.cpp tests/tests.cpp readFromFile.cpp
-# 	$(LD) catch/catchmain.cpp tests/tests.cpp readFromFile.cpp $(LDFLAGS) -o test
-
-clean:
-	-rm -f *.o $(EXENAME) test
