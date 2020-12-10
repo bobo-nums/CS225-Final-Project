@@ -32,40 +32,38 @@ void Graph::fillGraph(vector<string> edges, string egoNode){
     //vertex and string are interchangeable
     vector<string> first, second, intersection;
 	string source_, dest_, first1, last1, first2, last2;
-    size_t i, j, limit, smaller;
+    size_t i, j;
     int numCommon = 0;
+    //int firstLarger;
     //1365
 	for(Edge e : this->getEdges()){
 		source_ = e.source;  
 		dest_ = e.dest;
-		first = getAdjacent(e.source);
+		first = getAdjacent(e.source); //vertices adjacent
 		second = getAdjacent(e.dest);
         if(first.size() < second.size()){
-            limit = second.size();
-            smaller = first.size();
-        } else{
-            limit = first.size();
-            smaller = second.size();
-        }
-        for(i = 0; i < limit; i++){
-            for(j = 0; j < smaller; j++){
-                if(first[i] == first[j]){
-                    numCommon++;
+            for(i = 0; i < second.size(); i++){
+                for(j = 0; j < first.size(); j++){
+                    if(first[j] == second[i]){//this vertex exists in both
+                        //an edge exists between these
+                        //find shared outgoing vertices: source and destination both follow this vertex
+                        //you can change this if to find other thing about this shared vertex
+                        if(edgeExists(source_, first[j]) && edgeExists(dest_, first[j]))
+                            numCommon++;
+                    }
+                    
+                }
+            }
+        } else{ //first is larger
+            for(i = 0; i < first.size(); i++){
+                for(j = 0; j < second.size(); j++){
+                    if(first[i] == second[j]){
+                        if(edgeExists(source_, first[j]) && edgeExists(dest_, first[j]))
+                            numCommon++;
+                    }
                 }
             }
         }
-
-        // first1 = first[i];
-        // last1 = first.back();
-        // first2 = second[i];
-        // last2 = second.back();
-		
-		// while(first1 != last1 && first2 != last2){
-            
-        // }
-        // set_intersection(first[1], first.back, second[1], second.back, back_inserter(intersection));
-		//assume this function above assigns the intersection of pairs of vertices to the intersection vector
-        //size corresponds to how many are in common within the two vertices
 		this->setEdgeWeight(source_, dest_, numCommon);
         numCommon = 0;
 		
