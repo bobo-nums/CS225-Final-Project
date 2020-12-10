@@ -23,20 +23,18 @@ else
 CLANG_VERSION_MSG = $(warning $(ccyellow) Looks like you are not on EWS. Be sure to test on EWS before the deadline. $(ccend))
 endif
 
+include cs225/make/cs225.mk
+
+test: output_msg tests.o graph.o
+	$(LD) tests.o graph.o $(LDFLAGS) -o test
+
+tests.o: tests/tests.cpp tests/catch.hpp
+	$(CXX) $(CXXFLAGS) tests/tests.cpp
+
 .PHONY: all clean output_msg #test
 
 all : $(EXENAME)
 
-output_msg: ; $(CLANG_VERSION_MSG)
-
 $(EXENAME): output_msg $(OBJS)
 	$(LD) $(OBJS) $(LDFLAGS) -o $(EXENAME)
 
-# readFromFile.o: main.cpp readFromFile.cpp graph.cpp dijkstra.cpp
-# 	$(CXX) $(CXXFLAGS) main.cpp readFromFile.cpp graph.cpp dijkstra.cpp
-
-# test: output_msg catch/catchmain.cpp tests/tests.cpp readFromFile.cpp
-# 	$(LD) catch/catchmain.cpp tests/tests.cpp readFromFile.cpp $(LDFLAGS) -o test
-
-clean:
-	-rm -f *.o $(EXENAME) test

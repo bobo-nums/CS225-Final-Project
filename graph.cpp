@@ -22,11 +22,14 @@ Graph::Graph(bool weighted, bool directed) : weighted(weighted),directed(directe
 
 void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoNode){
     this->insertVertex(egoNode);
+    //iterate through vector of edges and add all vertices
+    //do not worry about duplicates
     for(unsigned i = 0; i < edges.size(); i++){
         this->insertVertex(edges[i]);
         this->insertEdge(egoNode, edges[i]);
     }
-    for(unsigned i = 0; i < edges.size()/2; i++){
+    //iterate through sets of vertices to insert edges
+    for(unsigned i = 0; i < edges.size(); i+=2){
         this->insertEdge(edges[i], edges[i+1]);
     }
 
@@ -73,7 +76,7 @@ unsigned Graph::intersection(vector<string> &v1, vector<string> &v2){
             sum++;
         }
     }
-    return sum;
+    return INT_MAX - sum;
 }
 
 void Graph::DFS(string start_vertex){
@@ -108,7 +111,7 @@ vector<string> Graph::Dijkstra(string source, string destination){
         bool operator()(std::pair<string, int> const& a, std::pair<string, int> const& b) 
         { 
             //return true if vertex a's value > vertex b's value
-            return a.second < b.second; 
+            return a.second > b.second; 
         } 
     };
 

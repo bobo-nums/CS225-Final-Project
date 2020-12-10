@@ -43,9 +43,10 @@ int main(int argc, const char* argv[]){
 	//G.DFS(egoNode);
 	G.print();
 
-	vector<Vertex> path = G.Dijkstra("668423", "14471007");
+	vector<Vertex> path = G.Dijkstra("663463", "12007182");
 	for(unsigned i = 0; i < path.size(); i++){
 		cout << path[i] << " ";
 	}
 	cout << endl;
+	
 }
