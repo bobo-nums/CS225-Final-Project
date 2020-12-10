@@ -37,12 +37,10 @@ void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoN
             feature_map[features[i]].push_back(features[j]);
         }
     }
-
     fillWeights();
 }
 
 void Graph::fillWeights(){
-
     vector<Edge> edges = this->getEdges();
     for(Edge e : edges){
         Vertex source = e.source;
@@ -54,7 +52,6 @@ void Graph::fillWeights(){
 }
 
 int Graph::intersection(vector<string> &v1, vector<string> &v2){
-    
     int sum = 0;
     for(unsigned i = 0; i < v1.size(); i++){
         if(v1[i] == v2[i] && v1[i] == "1" && v2[i] == "1"){
@@ -89,7 +86,6 @@ vector<string> Graph::DFS(string start_vertex){
     }
     return result;
 }
-
 
 vector<string> Graph::Dijkstra(string source, string destination){
 
