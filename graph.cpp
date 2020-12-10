@@ -117,7 +117,7 @@ vector<string> Graph::Dijkstra(string source, string destination){
     distances[source] = 0;
     q.push(std::pair<string, int>(source, 0));
 
-    while(q.top().first != destination){
+    while(q.top().first != destination && !q.empty()){
         //get the pair from priority_queue
         std::pair<string, int> curr_node = q.top();
         string curr_vertex = curr_node.first;
@@ -140,6 +140,9 @@ vector<string> Graph::Dijkstra(string source, string destination){
     }
 
     //extract path from previous
+    if(prev_map.find(destination) == prev_map.end()){
+        return vector<Vertex>();
+    } 
     vector<string> path;
     string curr = destination;
     while(curr != source){
