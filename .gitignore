@@ -2,3 +2,9 @@ finalproj
 graph.o
 main.o
 readFromFile.o
+test
+.objs/tests/tests.o
+.objs/cs225/HSLAPixel.o
+.objs/cs225/PNG.o
+.objs/cs225/catch/catchmain.o
+.objs/cs225/lodepng/lodepng.o
