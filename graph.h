@@ -66,6 +66,7 @@ public:
     void fillGraph(vector<string>, string);
     void DFS(string);
     vector<string> Dijkstra(string, string);
+    string helper(vector<pair<string, string>>, string, string, string);
 
     //////////////////////////////////////////////////////////////////////////
     /**

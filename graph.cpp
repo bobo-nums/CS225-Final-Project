@@ -78,6 +78,7 @@ vector<string> Graph::Dijkstra(string source, string destination){
     myqueue q;   // initialize the priority queue of vertex distance pairs
     std::set<string> visited;   //initialize visited set to check which vertices have been visited
 
+    vector<pair<string, string>> test;
 
     for(Vertex v : vertices){
         distances[v] = INT_MAX;
@@ -92,7 +93,7 @@ vector<string> Graph::Dijkstra(string source, string destination){
         q.pop();
         
         //mark current node as visited
-        visited.insert(curr_node.first);
+        visited.insert(curr_vertex);
         
         vector<string> neighbors = this->getAdjacent(curr_vertex);
         for(string neighbor : neighbors){
@@ -102,10 +103,24 @@ vector<string> Graph::Dijkstra(string source, string destination){
                     distances[neighbor] = dist;
                     prev_map[neighbor] = curr_vertex;
                     q.push(std::pair<string, int>(neighbor, dist));
+                    test.push_back(pair<string, string>(neighbor, curr_vertex));
                 }
             }
         }
     }
+    // test vector prev
+    vector<string> result;
+    for(unsigned i = 0; i < test.size(); i++){
+        if(test[i].second != source){
+            break;
+        }
+        string push = helper(test, source, destination, "");
+        result.push_back(push);
+    }
+    for(unsigned i = 0; i < result.size(); i++){
+        cout << result[i] << endl;
+    }
+
     //extract path from previous
     vector<string> path;
     string curr = destination;
@@ -115,6 +130,22 @@ vector<string> Graph::Dijkstra(string source, string destination){
     }
     std::reverse(path.begin(), path.end());
     return path;
+}
+
+string Graph::helper(vector<pair<string, string>> test, string source, string destination, string result){
+    for(unsigned i = 0; i < test.size(); i++){
+        if(test[i].second == source){
+            result.append(test[i].second);
+            if(test[i].first == destination){
+                result.append(test[i].first);
+                return result;
+            }
+            else {
+                helper(test, test[i].first, destination, result);
+            }
+        }
+    }
+    return result;
 }
 //////////////////////////////////////////////////////////
 
