@@ -68,15 +68,15 @@ void Graph::fillWeights(){
     }
 }
 
-unsigned Graph::intersection(vector<string> &v1, vector<string> &v2){
+int Graph::intersection(vector<string> &v1, vector<string> &v2){
     
-    unsigned sum = 0;
+    int sum = 0;
     for(unsigned i = 0; i < v1.size(); i++){
         if(v1[i] == v2[i] && v1[i] == "1" && v2[i] == "1"){
             sum++;
         }
     }
-    return INT_MAX - sum;
+    return 1364 - sum;
 }
 
 void Graph::DFS(string start_vertex){
@@ -122,6 +122,10 @@ vector<string> Graph::Dijkstra(string source, string destination){
     myqueue q;   // initialize the priority queue of vertex distance pairs
     std::set<string> visited;   //initialize visited set to check which vertices have been visited
 
+    //check if source has outgoing edges
+    vector<Vertex> adj = this->getAdjacent(source);
+    if(adj.empty()) return vector<Vertex>();
+
 
     for(Vertex v : vertices){
         distances[v] = INT_MAX;
@@ -129,12 +133,11 @@ vector<string> Graph::Dijkstra(string source, string destination){
     distances[source] = 0;
     q.push(std::pair<string, int>(source, 0));
 
-    while(q.top().first != destination){
+    while(q.top().first != destination && !q.empty()){
         //get the pair from priority_queue
         std::pair<string, int> curr_node = q.top();
         string curr_vertex = curr_node.first;
         q.pop();
-        
         //mark current node as visited
         visited.insert(curr_node.first);
         
@@ -151,14 +154,43 @@ vector<string> Graph::Dijkstra(string source, string destination){
         }
     }
     //extract path from previous
+    if(prev_map.find(destination) == prev_map.end()) return vector<Vertex>();
     vector<string> path;
     string curr = destination;
     while(curr != source){
         path.push_back(curr);
         curr = prev_map[curr];
     }
+    path.push_back(source);
     std::reverse(path.begin(), path.end());
     return path;
+}
+
+
+int Graph::centrality(Vertex vertex){
+    vector<Vertex> vertices = this->getVertices();
+    unordered_map<Vertex, int> dict_of_measures;
+
+    for(unsigned i = 0; i < vertices.size()-1; i++){
+        for(unsigned j = i+1; j < vertices.size(); j++){
+            vector<Vertex> path = Dijkstra(vertices[i], vertices[j]);
+            vector<Vertex> reversePath = Dijkstra(vertices[j], vertices[i]);
+            if(path.size() > 2){
+                for(unsigned k = 1; k < path.size()-1; k++){
+                    dict_of_measures[path[k]] = dict_of_measures[path[k]] + 1;
+                    cout << path[k] << ": " << dict_of_measures[path[k]] << endl;
+                }
+            }
+            if(reversePath.size() > 2){
+                for(unsigned k = 1; k < reversePath.size()-1; k++){
+                    dict_of_measures[reversePath[k]] = dict_of_measures[reversePath[k]] + 1;
+                    cout << reversePath[k] << ": " << dict_of_measures[reversePath[k]] << endl;
+                }
+            }
+        }
+    }
+
+    return dict_of_measures[vertex];
 }
 //////////////////////////////////////////////////////////
 

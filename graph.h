@@ -65,10 +65,10 @@ public:
     //////////////////////////////////////////////////////////////////////////
     void fillGraph(vector<Vertex>, vector<string>, string);
     void fillWeights();
-    unsigned intersection(vector<string>&, vector<string>&);
+    int intersection(vector<string>&, vector<string>&);
     void DFS(string);
     vector<string> Dijkstra(string, string);
-
+    int centrality(Vertex);
     //////////////////////////////////////////////////////////////////////////
     /**
      * Gets all adjacent vertices to the parameter vertex.
