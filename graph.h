@@ -68,8 +68,9 @@ public:
      * @param edges - all of the edges from .edges file
      * @param features - vector of features for all nodes
      * @param egoNode - initial node that is connected to all others
+     * @param numFeatures - number of features a node has
      */
-    void fillGraph(vector<Vertex> edges, vector<string> features, string egoNode);
+    void fillGraph(vector<Vertex> edges, vector<string> features, string egoNode, unsigned numFeatures);
 
     /**
      * Sets the edge weights based on number of features in common

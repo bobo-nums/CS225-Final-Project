@@ -18,7 +18,7 @@ Graph::Graph(bool weighted, bool directed) : weighted(weighted),directed(directe
 
 
 // =============================================================================================================
-void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoNode){
+void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoNode, unsigned numFeatures){
     this->insertVertex(egoNode);
     //iterate through vector of edges and add all vertices
     //do not worry about duplicates
@@ -32,8 +32,7 @@ void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoN
         this->insertEdge(edges[i], edges[i+1]);
     }
 
-    //number of features 1364
-    unsigned data_interval = 1365;
+    unsigned data_interval = numFeatures;
     for(unsigned i = 0; i < features.size(); i += data_interval){
         for(unsigned j = i+1; j < i + data_interval; j++){
             feature_map[features[i]].push_back(features[j]);
