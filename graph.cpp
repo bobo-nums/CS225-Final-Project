@@ -32,6 +32,7 @@ void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoN
         this->insertEdge(edges[i], edges[i+1]);
     }
 
+    //create a map of vertices(users) and their corresponding features
     unsigned data_interval = numFeatures;
     for(unsigned i = 0; i < features.size(); i += data_interval){
         for(unsigned j = i+1; j < i + data_interval; j++){
@@ -59,29 +60,33 @@ unsigned Graph::intersection(vector<string> &v1, vector<string> &v2, unsigned nu
             sum++;
         }
     }
+    //return the maximum number of features - the number of features in common
+    //Djikstra's favors lower weights, however we want a larger sum of features to signify a better path
     return numFeatures - sum;
 }
 
 vector<string> Graph::DFS(string start_vertex){
+    //Initialize necessary data structures
     vector<string> result;
     set<string> visited; 
-    
     stack<string> stk;
+    
     stk.push(start_vertex);
     string curr_vertex;
 
+    //traverse the graph until all connected nodes have been visited and the stack is empty
     while(!stk.empty()){
         curr_vertex = stk.top();
         stk.pop();
 
         if(visited.find(curr_vertex) == visited.end()){
-            result.push_back(curr_vertex);
-            visited.insert(curr_vertex);
+            result.push_back(curr_vertex); //store DFS path in result 
+            visited.insert(curr_vertex); //mark node as visited
         }
 
         for(string neighbor : getAdjacent(curr_vertex)){
             if(visited.find(neighbor) == visited.end()){
-                stk.push(neighbor);
+                stk.push(neighbor); //add unvisited neighbors to stack
             }
         }
     }
@@ -94,11 +99,12 @@ vector<string> Graph::Dijkstra(string source, string destination){
         bool operator()(std::pair<string, int> const& a, std::pair<string, int> const& b) 
         { 
             //return true if vertex a's value > vertex b's value
+            //this ensures lower weights are prioritized in queue
             return a.second > b.second; 
         } 
     };
 
-    vector<Vertex> vertices = this->getVertices();
+    vector<Vertex> vertices = this->getVertices();  //retrieve a vector of all the vertices in the graph
     std::unordered_map<string, int> distances;  // initialize tentative distance values for each vertex
     std::unordered_map<string, string> prev_map;   // initialize a map that maps current vertex -> its previous vertex
     typedef std::priority_queue<std::pair<string, int>, vector<std::pair<string, int>>, CompareWeight> myqueue;
@@ -111,15 +117,17 @@ vector<string> Graph::Dijkstra(string source, string destination){
         return vector<Vertex>();
     }
 
+    //initialize vertices in distances map with initial distance of INT_MAX
     for(Vertex v : vertices){
         distances[v] = INT_MAX;
     }
-    distances[source] = 0;
+
+    distances[source] = 0; 
     q.push(std::pair<string, int>(source, 0));
 
     while(q.top().first != destination && !q.empty()){
-        //get the pair from priority_queue
-        std::pair<string, int> curr_node = q.top();
+        
+        std::pair<string, int> curr_node = q.top(); //get the next pair from priority_queue
         string curr_vertex = curr_node.first;
         q.pop();
 
@@ -138,12 +146,13 @@ vector<string> Graph::Dijkstra(string source, string destination){
             }
         }
     }
-
+    
+    //if no path exists return an empty vector
     if(prev_map.find(destination) == prev_map.end()){
         return vector<Vertex>();
     } 
   
-    //extract path from previous
+    //backtrace the path from prev_map
     vector<string> path;
     string curr = destination;
     while(curr != source){
@@ -159,14 +168,14 @@ int Graph::centrality(Vertex vertex){
     vector<Vertex> vertices = this->getVertices();
     unordered_map<Vertex, int> dict_of_measures;
 
-    // Go through every combination of two vertices, and store the frequency of each node in a map
+    // Go through every combination of two vertices
     for(unsigned i = 0; i < vertices.size()-1; i++){
         for(unsigned j = i+1; j < vertices.size(); j++){
-            vector<Vertex> path = Dijkstra(vertices[i], vertices[j]);
+            vector<Vertex> path = Dijkstra(vertices[i], vertices[j]);   //run Djikstra's in both directions since our graph is directed
             vector<Vertex> reversePath = Dijkstra(vertices[j], vertices[i]);
             if(path.size() > 2){
                 for(unsigned k = 1; k < path.size()-1; k++){
-                    dict_of_measures[path[k]] = dict_of_measures[path[k]] + 1;
+                    dict_of_measures[path[k]] = dict_of_measures[path[k]] + 1; //for each inner node increment their centrality measure
                 }
             }
             if(reversePath.size() > 2){
@@ -176,7 +185,7 @@ int Graph::centrality(Vertex vertex){
             }
         }
     }
-    return dict_of_measures[vertex];
+    return dict_of_measures[vertex]; //return the centrality measure of the requested vertex
 }
 // =============================================================================================================
 

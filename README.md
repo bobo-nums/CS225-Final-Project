@@ -24,3 +24,4 @@ Run the project using the following command: _./finalproj [egoNode] [dfs, dijkst
 * DFS Example: ./finalproj 12831 dfs 8479062
 * Dijkstra Example: ./finalproj 12831 dijkstra 20904050 13019862
 * Centrality Example: ./finalproj 12831 centrality 528 
+Run the test cases using the following command ./test
