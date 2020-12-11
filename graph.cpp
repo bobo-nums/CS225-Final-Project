@@ -38,28 +38,28 @@ void Graph::fillGraph(vector<Vertex> edges, vector<string> features, string egoN
             feature_map[features[i]].push_back(features[j]);
         }
     }
-    fillWeights();
+    fillWeights(numFeatures);
 }
 
-void Graph::fillWeights(){
+void Graph::fillWeights(unsigned numFeatures){
     vector<Edge> edges = this->getEdges();
     for(Edge e : edges){
         Vertex source = e.source;
         Vertex dest = e.dest;
-        unsigned num_common = intersection(feature_map[source], feature_map[dest]);
+        unsigned num_common = intersection(feature_map[source], feature_map[dest], numFeatures);
 
         this->setEdgeWeight(source, dest, num_common);
     }
 }
 
-int Graph::intersection(vector<string> &v1, vector<string> &v2){
-    int sum = 0;
+unsigned Graph::intersection(vector<string> &v1, vector<string> &v2, unsigned numFeatures){
+    unsigned sum = 0;
     for(unsigned i = 0; i < v1.size(); i++){
         if(v1[i] == v2[i] && v1[i] == "1" && v2[i] == "1"){
             sum++;
         }
     }
-    return 1364 - sum;
+    return numFeatures - sum;
 }
 
 vector<string> Graph::DFS(string start_vertex){
