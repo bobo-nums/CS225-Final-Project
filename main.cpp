@@ -15,6 +15,8 @@ int main(int argc, const char* argv[]){
 	vector<Vertex> edges;
 	vector<Vertex> egoFeatures;
 	vector<Vertex> features;
+	vector<Vertex> featNames;
+	unsigned numFeatures = 0;
 	bool dfs = false;
 	bool dijkstra = false;
 	bool centrality = false;
@@ -25,6 +27,8 @@ int main(int argc, const char* argv[]){
 		edges = file_to_vector("sample_dataset/" + egoNode + ".edges");
 		egoFeatures = file_to_vector("sample_dataset/" + egoNode + ".egofeat");
 		features = file_to_vector("sample_dataset/" + egoNode + ".feat");
+		featNames = file_to_vector("sample_dataset/" + egoNode + ".featnames");
+		numFeatures = (unsigned)stoi(featNames[featNames.size() - 2]) + 2;
 		if(strcmp(argv[2], "dfs") == 0){
 			dfs = true;
 			source = argv[3];
@@ -48,7 +52,7 @@ int main(int argc, const char* argv[]){
 
 	// Create weighted, directed graph
 	Graph G(true, true);
-	G.fillGraph(edges, features, egoNode);
+	G.fillGraph(edges, features, egoNode, numFeatures);
 
 	// Run DFS
 	if(dfs){
