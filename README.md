@@ -16,7 +16,7 @@ Extract contents and place all files into a folder called _sample_dataset_ in th
 
 Build the project and test cases using _make_ and _make test_
 
-Run the project using the following command: _./finalproj [egoNode] [dfs, dijkstra, centrality] [source node] [destination node (ONLY for dijkstra)]_
+Run the project using the following command: _./finalproj [egoNode] [dfs, dijkstra, centrality] [source] [destination (ONLY for dijkstra)]_
 * [egoNode]: The number in the file name (Ex. 12831.edges -> 12831)
 * [dfs, dijkstra, centrality]: Choose which algorithm to run
 * [source node]: Choose the source node to run algorithms with (any number in the .edges file)
