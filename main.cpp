@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// Usage: 	./finalproj [egoNode] [dfs, dijkstra, centrality] [source node] [destination node (for dijkstra)]
+// Usage: 	./finalproj [egoNode] [dfs, dijkstra, centrality] [source] [destination (for dijkstra)]
 
 int main(int argc, const char* argv[]){
 	// Initialize variables & parse input 
