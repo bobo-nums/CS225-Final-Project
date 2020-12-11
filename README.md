@@ -1,5 +1,8 @@
 # CS 225 Final Project
 ## Team Members: Bowen Xiao, Richard Przybek, Nathen Smith, Vijay Gopalakrishnan
+
+Video Link: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
 Traversal: DFS
 
 Covered Algorithms: Dijkstra’s Algorithm
