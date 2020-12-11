@@ -74,16 +74,18 @@ public:
 
     /**
      * Sets the edge weights based on number of features in common
+     * @param numFeatures - number of features a node has
      */
-    void fillWeights();
+    void fillWeights(unsigned numFeatures);
 
     /**
      * Computes the intersection between two feature vectors
      * @param v1 - feature vector 1
      * @param v2 - feature vector 2
+     * @param numFeatures - number of features a node has
      * @return number of features in common
      */
-    int intersection(vector<string>& v1, vector<string>& v2);
+    unsigned intersection(vector<string>& v1, vector<string>& v2, unsigned numFeatures);
 
     /**
      * Performs DFS on a given vertex

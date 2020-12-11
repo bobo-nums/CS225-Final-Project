@@ -54,6 +54,9 @@ int main(int argc, const char* argv[]){
 	Graph G(true, true);
 	G.fillGraph(edges, features, egoNode, numFeatures);
 
+	// Print the graph
+	G.print();
+	
 	// Run DFS
 	if(dfs){
 		vector<string> dfs_result = G.DFS(source);
